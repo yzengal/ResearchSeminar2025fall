@@ -6,10 +6,10 @@ from pymilvus import connections, Collection, utility
 from VdbConfig import vdb_config
 from tqdm import tqdm
 
-class QueryProcessor:
+class MultiVectorSearcher:
     def __init__(self, milvus_client: MilvusClient):
         """
-        初始化 QueryProcessor 类
+        初始化 MultiVectorSearcher 类
         
         Args:
             milvus_client (MilvusClient): Milvus 客户端实例
@@ -143,7 +143,7 @@ class QueryProcessor:
 
 
 
-    def _multi_vector_search_byDB(self, 
+    def multi_vector_search(self, 
                                     collection_name: str, 
                                     query_file_path: str, 
                                     top_k: int, 
@@ -169,34 +169,16 @@ class QueryProcessor:
         return result
 
 
-    def multi_vector_search(self, 
-                            collection_name: str, 
-                            query_file_path: str, 
-                            top_k: int, 
-                            search_params: dict,
-                            mode: str="ByDB"):
-        if mode not in ["ByDB", "ByNumpy"]:
-             raise ValueError("mode must be one of 'ByDB' or 'ByNumpy'")
-
-        if mode == "ByDB":
-            return self._multi_vector_search_byDB(collection_name, query_file_path, top_k, search_params)
-        else:
-            return self._multi_vector_search_byNumpy(collection_name, query_file_path, top_k, search_params)
-
-
 if __name__ == "__main__":
     milvus_client_uri = vdb_config.VDB_URI
     client = MilvusClient(uri = milvus_client_uri)
-    query_processor = QueryProcessor(client)
+    query_processor = MultiVectorSearcher(client)
     top_k = 20 
-    mode = "ByNumpy"
 
     for idx,query_dict in enumerate(vdb_config.QUERY_WORKLOAD):
         collection_name = query_dict["collection_name"]
         if "EXACT" not in collection_name:
             continue
-        if mode=="ByNumpy":
-            collection_name = vdb_config.DATASET_VECTOR_PATH[idx]
         query_file_path = query_dict["query_file_path"]
         search_params = vdb_config.SEARCH_PARAMS[idx]
         print(f"search_params = {search_params}")
@@ -205,10 +187,9 @@ if __name__ == "__main__":
                     collection_name=collection_name, 
                     query_file_path=query_file_path, 
                     top_k=top_k, 
-                    search_params=search_params,
-                    mode=mode)
+                    search_params=search_params)
         
-        with open(f"ground_truth_{mode}.txt", "w") as fout:
+        with open(f"ground_truth.dat", "w") as fout:
             fout.write(f"{len(result)}\n")
             for answer_doc_list in result:
                 line = " ".join(map(str, answer_doc_list))
