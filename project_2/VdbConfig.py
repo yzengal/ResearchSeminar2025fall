@@ -21,8 +21,8 @@ class VdbConfig:
             f"{YOUR_PREFIX}_APPROX_{dataset_name}",
         ]
         self.DATASET_VECTOR_PATH = [
-            f"./lotte-lifestyle-data-small.fivecs",
-            f"./lotte-lifestyle-data-small.fivecs",
+            f"/home/dataset/Seminar2025Fall/{dataset_name}/lotte-lifestyle-data-small.fivecs",
+            f"/home/dataset/Seminar2025Fall/{dataset_name}/lotte-lifestyle-data-small.fivecs",
         ]
         self.SCHEMA_FIELD_CONFIG = [
             [
@@ -52,8 +52,8 @@ class VdbConfig:
             },
         ]
         self.QUERY_WORKLOAD = [
-            {"collection_name": f"{YOUR_PREFIX}_EXACT_{dataset_name}", "query_file_path": f"./lotte-lifestyle-query-small.fivecs"},
-            {"collection_name": f"{YOUR_PREFIX}_APPROX_{dataset_name}", "query_file_path": f"./lotte-lifestyle-query-small.fivecs"},
+            {"collection_name": f"{YOUR_PREFIX}_EXACT_{dataset_name}", "query_file_path": f"/home/dataset/Seminar2025Fall/{dataset_name}/lotte-lifestyle-query-small.fivecs"},
+            {"collection_name": f"{YOUR_PREFIX}_APPROX_{dataset_name}", "query_file_path": f"/home/dataset/Seminar2025Fall/{dataset_name}/lotte-lifestyle-query-small.fivecs"},
         ]
         self.SEARCH_PARAMS = [
             {"metric_type": DISTANCE_TYPE},

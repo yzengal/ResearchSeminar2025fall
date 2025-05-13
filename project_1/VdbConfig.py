@@ -14,7 +14,7 @@ class VdbConfig:
         # 修改为你自己的前缀
         YOUR_PREFIX = "ZYX"             
         # 修改为不同的数据集名称 ["WIT", "Youtube_audio", "Youtube_rgb"]
-        dataset_name = "WIT"            
+        dataset_name = "Youtube_rgb"            
         # 在 L2 和 IP 之间切换
         DISTANCE_TYPE = "L2"            
         # 根据数据集名称确定数据集维度
@@ -34,12 +34,12 @@ class VdbConfig:
             f"{YOUR_PREFIX}_APPROX_{dataset_name}",
         ]
         self.DATASET_VECTOR_PATH = [
-            f"./dataset/{dataset_name}/vector_0.fivecs",
-            f"./dataset/{dataset_name}/vector_0.fivecs",
+            f"/home/dataset/Seminar2025Fall/{dataset_name}/vector_0.fivecs",
+            f"/home/dataset/Seminar2025Fall/{dataset_name}/vector_0.fivecs",
         ]
         self.DATASET_ATTR_PATH = [
-            f"./dataset/{dataset_name}/meta_0.txt",
-            f"./dataset/{dataset_name}/meta_0.txt",
+            f"/home/dataset/Seminar2025Fall/{dataset_name}/meta_0.txt",
+            f"/home/dataset/Seminar2025Fall/{dataset_name}/meta_0.txt",
         ]
         if dataset_name == "WIT":
             self.SCHEMA_FIELD_CONFIG = [
@@ -83,8 +83,8 @@ class VdbConfig:
             },
         ]
         self.QUERY_WORKLOAD = [
-            {"collection_name": f"{YOUR_PREFIX}_EXACT_{dataset_name}", "query_file_path": f"./dataset/{dataset_name}/query.txt"},
-            {"collection_name": f"{YOUR_PREFIX}_APPROX_{dataset_name}", "query_file_path": f"./dataset/{dataset_name}/query.txt"},
+            {"collection_name": f"{YOUR_PREFIX}_EXACT_{dataset_name}", "query_file_path": f"/home/dataset/Seminar2025Fall/{dataset_name}/query.txt"},
+            {"collection_name": f"{YOUR_PREFIX}_APPROX_{dataset_name}", "query_file_path": f"/home/dataset/Seminar2025Fall/{dataset_name}/query.txt"},
         ]
         self.SEARCH_PARAMS = [
             {"metric_type": DISTANCE_TYPE},

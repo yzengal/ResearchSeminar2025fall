@@ -10,6 +10,7 @@ from pymilvus import (
     MilvusClient
 )
 from typing import Dict, List, Optional, Any
+from tqdm import tqdm
 
 class DataLoader:
     def __init__(self, milvus_client: MilvusClient):
@@ -159,11 +160,12 @@ class DataLoader:
 
         # 分批插入
         total_size = len(data_list)
-        for sid in range(0, total_size, batch_size):
-            eid = min(sid+batch_size, total_size)
-            batch_data = data_list[sid:eid]
-            collection.insert(batch_data)
-            print(f"已插入 {eid}/{total_size} 条数据")
+        with tqdm(total=total_size, desc="插入数据进度") as pbar:
+            for sid in range(0, total_size, batch_size):
+                eid = min(sid+batch_size, total_size)
+                batch_data = data_list[sid:eid]
+                collection.insert(batch_data)
+                pbar.update(eid - sid)  # 更新已插入的数据条数
 
         collection.flush()
 
@@ -179,12 +181,11 @@ class DataLoader:
             collection_name (str): 目标集合名称
             index_params (Dict[str, Any]): 索引配置的参数
         """
-        print(collection_name)
         collection = Collection(collection_name, using=self.client._using)
         
         index_field_name = index_params["field_name"]
         collection.create_index(field_name=index_field_name, index_params=index_params)
-        print("向量索引创建完成")
+        print(f"{collection_name} 向量索引创建完成")
         
         collection.flush()
 
