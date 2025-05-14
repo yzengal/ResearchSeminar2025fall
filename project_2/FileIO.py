@@ -55,7 +55,7 @@ def read_fivecs(file_name, chunk_size=4096):
         
         # Read data in chunks
         for start_vector_id in tqdm(range(0, total_vectors, chunk_size), 
-                                    total=total_vectors,
+                                    total=(total_vectors+chunk_size-1)//chunk_size,
                                     desc="Reading vector data file"):
             # Calculate bytes to read in this chunk
             vectors_in_chunk = min(total_vectors-start_vector_id, chunk_size)
